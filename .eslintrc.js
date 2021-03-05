@@ -10,6 +10,6 @@ module.exports = {
     },
     "rules": {
         "quotes": ["error", "double"],
-        "no-unused-vars": "off"
+        "no-unused-vars": "off",
     }
 };
