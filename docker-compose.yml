@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  reverse-proxy:
+    image: traefik:v2.4.6
+    # Enables the web UI and tells Traefik to listen to docker
+    command: 
+      - --entrypoints.web.address=:80
+      - --api.insecure=true 
+      - --providers.docker
+      - --log.level=DEBUG
+    ports:
+      # The HTTP port
+      - "80:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+    networks:
+      - stack-network
+
+  auth-gateway:
+    image: mettan-dev/auth-gateway-express:latest
+    restart: unless-stopped
+    networks:
+      - stack-network
+    labels:
+    - traefik.http.routers.auth-gw.rule=Host(`auth.demo.com`)
+    - traefik.http.services.auth-gw.loadbalancer.server.port=3000
+    - traefik.docker.network=stack-network
+
+
+networks:
+  stack-network:
+    external: true
+
