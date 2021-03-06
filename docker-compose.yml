@@ -31,6 +31,16 @@ services:
     - traefik.http.services.auth-gw.loadbalancer.server.port=3000
     - traefik.docker.network=stack-network
 
+  spa-example:
+    image: mettan-dev/spa-example:latest
+    restart: unless-stopped
+    networks:
+      - stack-network
+    labels:
+    - traefik.http.routers.spa-example.rule=Host(`demo.com`)
+    - traefik.http.services.spa-example.loadbalancer.server.port=8080
+    - traefik.docker.network=stack-network
+
 
 networks:
   stack-network:

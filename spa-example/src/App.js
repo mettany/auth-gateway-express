@@ -5,7 +5,7 @@ import './App.css';
 const isConnected = () => Cookies.get("app-session")
 
 const redirectToLogin = () => {
-  const url = "/login?redirect_uri=http://localhost:3000";
+  const url = `${window.ENV.AUTH_URL}/login?redirect_uri=${window.ENV.REDIRECT_URI}`;
   window.location.href = url;
 }
 

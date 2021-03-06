@@ -1,8 +1,9 @@
-const {secret, clientID, clientSecret, issuerBaseURL, protocol, host, port, audience} = require("../config.json");
+const {secret, clientID, clientSecret, issuerBaseURL, protocol, host, cookieDomain, port, audience, env} = require("../config.json");
 
 const config = {
+  env,
   auth: {
-    baseURL: `${protocol}://${host}${port ? ":"+port : ""}`,
+    baseURL: `${protocol}://${host}${env === "DEV" ? ":"+port : ""}`,
     clientID,
     clientSecret,
     issuerBaseURL,
@@ -18,6 +19,7 @@ const config = {
       secure: false,
       maxAge: 86400000,
       httpOnly: false,
+      domain: cookieDomain
     }
   },
   port
