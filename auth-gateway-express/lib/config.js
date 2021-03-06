@@ -17,7 +17,7 @@ const config = {
       signed: true,
       secure: false,
       maxAge: 86400000,
-      httpOnly: true,
+      httpOnly: false,
     }
   },
   port
