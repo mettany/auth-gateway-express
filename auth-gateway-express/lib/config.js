@@ -18,7 +18,7 @@ const config = {
       signed: true,
       secure: false,
       maxAge: 86400000,
-      httpOnly: false,
+      httpOnly: true,
       domain: cookieDomain
     }
   },
