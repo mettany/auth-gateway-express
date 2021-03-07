@@ -1,5 +1,7 @@
 const axios = require("axios").default;
 const { v4: uuid } = require("uuid");
+const jwt_decode = require("jwt-decode");
+
 const { auth } = require("./config");
 
 const scope = "openid profile email offline_access";
@@ -49,7 +51,27 @@ const token = async (req, res) => {
   res.redirect(req.session.redirect_uri);
 };
 
+const getUserInfos = (req, res) => {
+  const session = req.session.auth;
+  if(session) {
+    res.json(jwt_decode(session.id_token));
+    return;
+  }
+  res.status(401).end();
+};
+
+const authProxy = (req, res) => {
+  if(!req.session.auth) {
+    res.status(401).end();
+    return;
+  }
+  res.set("Authorization", `Bearer ${req.session.auth.access_token}`);
+  res.end();
+};
+
 module.exports = {
   login,
   token,
+  getUserInfos,
+  authProxy
 };

@@ -1,5 +1,5 @@
 window.ENV = {
-  AUTH_URL: "http://localhost:3000",
-  REDIRECT_URI: "http://localhost:4000",
-  API_BASE_PATH: "http://localhost:3001"
+  AUTH_URL: "http://auth.demo.com:3000",
+  REDIRECT_URI: "http://demo.com:4000",
+  API_BASE_PATH: "http://api.demo.com"
 }

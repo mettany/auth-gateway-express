@@ -20,6 +20,11 @@ services:
     restart: unless-stopped
     networks:
       - stack-network
+    labels:
+    - traefik.http.middlewares.api-forwardauth.forwardauth.address=http://auth-gateway:3000/auth
+    - traefik.http.middlewares.api-forwardauth.forwardauth.trustForwardHeader=true
+    - traefik.http.middlewares.api-forwardauth.forwardauth.authRequestHeaders=Cookie
+    - traefik.http.middlewares.api-forwardauth.forwardauth.authResponseHeaders=Authorization
 
   auth-gateway:
     image: mettan-dev/auth-gateway-express:latest
@@ -31,14 +36,15 @@ services:
     - traefik.http.services.auth-gw.loadbalancer.server.port=3000
     - traefik.docker.network=stack-network
 
-  auth-gateway:
+  api-example:
     image: mettan-dev/api-example:latest
     restart: unless-stopped
     networks:
       - stack-network
     labels:
-    - traefik.http.routers.auth-gw.rule=Host(`api.demo.com`)
-    - traefik.http.services.auth-gw.loadbalancer.server.port=3001
+    - traefik.http.routers.api-example.rule=Host(`api.demo.com`)
+    - traefik.http.routers.api-example.middlewares=api-forwardauth@docker
+    - traefik.http.services.api-example.loadbalancer.server.port=3001
     - traefik.docker.network=stack-network
 
   spa-example:
