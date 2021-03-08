@@ -13,3 +13,4 @@ RUN npm install
 ENTRYPOINT ["node", "index.js"]
 
 EXPOSE 3000
+EXPOSE 3001

@@ -21,7 +21,7 @@ services:
     networks:
       - stack-network
     labels:
-    - traefik.http.middlewares.api-forwardauth.forwardauth.address=http://auth-gateway:3000/auth
+    - traefik.http.middlewares.api-forwardauth.forwardauth.address=http://auth-gateway:3001/auth
     - traefik.http.middlewares.api-forwardauth.forwardauth.trustForwardHeader=true
     - traefik.http.middlewares.api-forwardauth.forwardauth.authRequestHeaders=Cookie
     - traefik.http.middlewares.api-forwardauth.forwardauth.authResponseHeaders=Authorization
@@ -31,6 +31,8 @@ services:
     restart: unless-stopped
     networks:
       - stack-network
+    depends_on:
+      - "reverse-proxy"
     labels:
     - traefik.http.routers.auth-gw.rule=Host(`auth.demo.com`)
     - traefik.http.services.auth-gw.loadbalancer.server.port=3000
@@ -41,6 +43,8 @@ services:
     restart: unless-stopped
     networks:
       - stack-network
+    depends_on:
+      - "reverse-proxy"
     labels:
     - traefik.http.routers.api-example.rule=Host(`api.demo.com`)
     - traefik.http.routers.api-example.middlewares=api-forwardauth@docker
@@ -52,6 +56,8 @@ services:
     restart: unless-stopped
     networks:
       - stack-network
+    depends_on:
+      - "reverse-proxy"
     labels:
     - traefik.http.routers.spa-example.rule=Host(`demo.com`)
     - traefik.http.services.spa-example.loadbalancer.server.port=8080
